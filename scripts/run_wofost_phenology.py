@@ -396,8 +396,8 @@ if __name__ == '__main__':
     # directory with the optimized TSUM1 parameters
     fpath_tsum1_opt_dir = cwd.joinpath('genotypes_Tsum1_opt')
     # input data directory with meteorological data.
-    # Make sure to download the data from
-    # <> first
+    # You will need git's large file storage (lfs) to download the data
+    # from the repository (on git clone)
     input_data_dir = cwd.parent.joinpath('meteo_data')
     # grid cells to run the model for (GeoPackage file)
     spatial_units = cwd.joinpath('spatial_units.gpkg')
