@@ -368,7 +368,7 @@ def run(
 if __name__ == '__main__':
 
     # fix working directory for all IDEs
-    cwd = Path(__file__).absolute()
+    cwd = Path(__file__).absolute().parent
 
     # set paths
     # default winter wheat calendar required by WOFOST
