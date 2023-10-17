@@ -242,11 +242,6 @@ eodal.code-workspace
 .vscode/
 
 *.xml
-data/weather_data/
+
 *.sh
-sowing_dates_*.csv
-pheno_res*.csv
-validation/weather_data/
-sensitivity/
-geocoder
-data/calibration_data.csv
+results/*.gpkg
