@@ -37,7 +37,7 @@ The [calibrated model parameter TSUM1](/scripts/genotypes_Tsum1_opt/) per variet
 ---
 **_IMPORTANT NOTE ON COMPUTATION TIME AND REQUIREMENTS_** 
 
-The script will run for 5230 grid cells (5230 km2) for the harvest years 1972 to 2020 for two genotypes and the earliest and latest posssible sowing date resulting in a total of 1 025 080 WOFOST runs. To speed up the computation, the code is parallelized by years using `number-of-cpus minus 1` in its default configuration. **Still, the computation takes some time!** (xx minutes on a Fedora workstation with 32 cores, AMD Threadripper yy, 126 GB RAM). If your computational capacities are limited we recommend to download the pre-computed results from [here](http://hdl.handle.net/20.500.11850/637092).
+The script will run for 5230 grid cells (5230 km2) for the harvest years 1972 to 2020 for two genotypes and the earliest and latest posssible sowing date resulting in a total of 1 025 080 WOFOST runs. To speed up the computation, the code is parallelized by years using `number-of-cpus minus 1` in its default configuration. **Still, the computation takes some time!** (up to 300 minutes on a Fedora workstation with AMD Ryzen Threadripper PRO 3955WX 16-Cores, 126 GB RAM). If your computational capacities are limited we recommend to download the pre-computed results from [here](http://hdl.handle.net/20.500.11850/637092).
 
 ---
 
