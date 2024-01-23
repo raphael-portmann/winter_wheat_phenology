@@ -2,7 +2,7 @@
 
 This repository contains code and data to simulate heading dates of Swiss varieties for nearly five decades (1971 to 2020) in the main wheat production areas of Switzerland. We use the phenology model of the [WOFOST crop growth model](https://www.wur.nl/en/show/A-gentle-introduction-to-WOFOST.htm) implemented in the [Python Crop Simulation Environment](https://github.com/ajwdewit/pcse) made available under [EUPL license, Version 1.1](http://ec.europa.eu/idabc/eupl). The implementation of the phenology model is based on tutorials by [Allard de Wit, Wageningen University and Research](https://github.com/ajwdewit) available [here](https://github.com/ajwdewit/pcse_notebooks) and work by [Raphael Portmann, Agroscope Reckenholz](https://github.com/raphael-portmann), who performed the [model calibration](https://github.com/raphael-portmann/PhenoSwiss/blob/master/calibrate_and_run_phenology_Switzerland.ipynb).
 
-Meteorological data (daily minimum and maximum air temperature 2 m above ground and daily precipitation totals) have been made available by the [Swiss Federal Office of Meteorology and Climatology, MeteoSwiss](https://www.meteoswiss.admin.ch/#tab=forecast-map), which we kindly acknowledge.
+Meteorological data (daily minimum and maximum air temperature 2 m above ground and daily precipitation totals) have been made available by the [Swiss Federal Office of Meteorology and Climatology, MeteoSwiss](https://www.meteoschweiz.admin.ch/klima/klima-der-schweiz/raeumliche-klimaanalysen.html), which we kindly acknowledge.
 
 ## Setup the environment
 
