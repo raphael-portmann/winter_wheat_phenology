@@ -163,7 +163,7 @@ def process_year(
         try:
             for variable in meteo_year.keys():
                 meteo_year_unit[variable] = \
-                    meteo_year[variable][str(unit.eodal_id)].copy()
+                    meteo_year[variable][str(unit.ID)].copy()
         except Exception as e:
             logger.error(f'{unit.NAME}: {e}')
             continue
@@ -185,7 +185,7 @@ def process_year(
             sowing_date_early = dates[sowing_date_idx_early]
         except ValueError:
             logger.info(
-                f'{unit.eodal_id} {year}: No sowing date found. ' +
+                f'{unit.ID} {year}: No sowing date found. ' +
                 'Using Default.')
             sowing_date_early = datetime(year, 10, 7)
 
@@ -199,7 +199,7 @@ def process_year(
             sowing_date_late = dates[sowing_date_idx_late]
         except ValueError:
             logger.info(
-                f'{unit.eodal_id} {year}: No sowing date found. ' +
+                f'{unit.ID} {year}: No sowing date found. ' +
                 'Using Default.')
             # use default late sowing date (7th ofNovember)
             sowing_date_late = datetime(year, 11, 7)
@@ -282,7 +282,7 @@ def process_year(
 
             # save results in compact format
             res_early_sowing = {
-                'id': unit.eodal_id,
+                'id': unit.ID,
                 'harvest_year': year + 1,
                 'sowing_date': sowing_date_early.date().strftime(
                     '%Y-%m-%d'),
@@ -297,7 +297,7 @@ def process_year(
                 'geometry': unit.geometry
             }
             res_late_sowing = {
-                'id': unit.eodal_id,
+                'id': unit.ID,
                 'harvest_year': year + 1,
                 'sowing_date': sowing_date_late.date().strftime(
                     '%Y-%m-%d'),
@@ -369,7 +369,12 @@ def run(
     for fpath_meteo in input_data_dir.glob('*.csv'):
         variable = fpath_meteo.name.split('_')[0]
         meteo_df = pd.read_csv(fpath_meteo, index_col=0)
-        meteo_df['date'] = pd.to_datetime(meteo_df.date).dt.date
+        if 'date' in meteo_df:
+            meteo_df['date'] = pd.to_datetime(meteo_df.date).dt.date
+        elif 'time' in meteo_df:
+            meteo_df['date'] = pd.to_datetime(meteo_df.time).dt.date
+        else:
+            raise ValueError('Neither "time" nor "date" found in meteo data')
         meteo[variable] = meteo_df
 
     # loop through the years using a multiprocessing pool
