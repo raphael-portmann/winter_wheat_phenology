@@ -17,6 +17,9 @@ docs/source/readme.rst
 # Ignore test result XML files
 testresults.xml
 coverage.xml
+meteo_data/MeteoSwiss/
+meteo_data/ClimateSimulations/
+*/Phenologie_Fossati_put_together_00_18.csv
 
 ##---------------------------------------------------
 # IDE .gitignore files
