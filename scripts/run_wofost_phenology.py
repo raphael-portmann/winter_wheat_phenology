@@ -120,7 +120,7 @@ def process_year(
         meteo: dict,
         units: gpd.GeoDataFrame,
         output_dir: Path,
-        genotypes: list[str],
+        genotypes: "list[str]",
         fpath_tsum1_opt_dir: Path,
         fpath_wheat_calendar: Path
 ) -> None:
@@ -246,12 +246,14 @@ def process_year(
             with open(
                 fpath_tsum1_opt_dir.joinpath(f'{genotype.lower()}.txt')
             ) as src:
-                tsum1_opt = float(src.read())
+                tsum1_opt = float(src.read().split()[0])
+                tsum2_opt = float(src.read().split()[1])
 
             cropd = pcse.fileinput.YAMLCropDataProvider()
             cropd.set_active_crop('wheat', 'Winter_wheat_105')
             cropdata = cropd.copy()
             cropdata['TSUM1'] = tsum1_opt
+            cropdata['TSUM2'] = tsum2_opt
 
             # set the parameters
             parameters = ParameterProvider(
@@ -327,11 +329,11 @@ def process_year(
 
 
 def run(
-        spatial_units: Path | gpd.GeoDataFrame,
+        spatial_units: "Path | gpd.GeoDataFrame",
         input_data_dir: Path,
         output_dir: Path,
-        years: list[int],
-        genotypes: list[str],
+        years: "list[int]",
+        genotypes: "list[str]",
         fpath_wheat_calendar: Path,
         fpath_tsum1_opt_dir: Path
 ) -> None:
@@ -403,7 +405,7 @@ if __name__ == '__main__':
     # input data directory with meteorological data.
     # You will need git's large file storage (lfs) to download the data
     # from the repository (on git clone)
-    input_data_dir = cwd.parent.joinpath('meteo_data')
+    input_data_dir = cwd.parent.joinpath('meteo_data/MeteoSwiss')
     # grid cells to run the model for (GeoPackage file)
     spatial_units = cwd.joinpath('spatial_units.gpkg')
 
