@@ -122,7 +122,8 @@ def process_year(
         output_dir: Path,
         genotypes: "list[str]",
         fpath_tsum1_opt_dir: Path,
-        fpath_wheat_calendar: Path
+        fpath_wheat_calendar: Path,
+        sowing_date: "datetime or None"
 ) -> None:
     """
     For each year and spatial unit, estimate the sowing date and run the
@@ -136,6 +137,7 @@ def process_year(
     :param genotypes: list of genotypes to run
     :param fpath_tsum1_opt_dir: directory with optimized TSUM1 parameters
     :param fpath_wheat_calendar: path to the wheat calendar file
+    :param sowing_date: fixed sowing date with dummy year
     """
 
     logger.info(f'Working on growing season {year} - {year+1}')
@@ -167,42 +169,44 @@ def process_year(
         except Exception as e:
             logger.error(f'{unit.NAME}: {e}')
             continue
-        # for the sowing date, the daily mean air temperature is required
-        tmean = (
-            meteo_year_unit['TmaxD'].values +
-            meteo_year_unit['TminD'].values) * 0.5
-        tmean = pd.Series(tmean)
-        daily_precip = meteo_year_unit['RhiresD'].values
-        daily_precip = pd.Series(daily_precip)
+        # Estimate sowing date if no fixed sowing date is passed. To
+        # To estimate the sowing date, the daily mean air temperature is required
+        if sowing_date is None:
+            tmean = (
+                meteo_year_unit['TmaxD'].values +
+                meteo_year_unit['TminD'].values) * 0.5
+            tmean = pd.Series(tmean)
+            daily_precip = meteo_year_unit['RhiresD'].values
+            daily_precip = pd.Series(daily_precip)
 
-        # first (earliest) possible sowing date
-        try:
-            sowing_date_idx_early = estimate_sowing_date(
-                tmean=tmean,
-                daily_precip=daily_precip,
-                choice=1
-            )
-            sowing_date_early = dates[sowing_date_idx_early]
-        except ValueError:
-            logger.info(
-                f'{unit.ID} {year}: No sowing date found. ' +
-                'Using Default.')
-            sowing_date_early = datetime(year, 10, 7)
+            # first (earliest) possible sowing date
+            try:
+                sowing_date_idx_early = estimate_sowing_date(
+                    tmean=tmean,
+                    daily_precip=daily_precip,
+                    choice=1
+                )
+                sowing_date_early = dates[sowing_date_idx_early]
+            except ValueError:
+                logger.info(
+                    f'{unit.ID} {year}: No sowing date found. ' +
+                    'Using Default.')
+                sowing_date_early = datetime(year, 10, 7)
 
-        # last (latest) possible sowing date
-        try:
-            sowing_date_idx_late = estimate_sowing_date(
-                tmean=tmean,
-                daily_precip=daily_precip,
-                choice=-1
-            )
-            sowing_date_late = dates[sowing_date_idx_late]
-        except ValueError:
-            logger.info(
-                f'{unit.ID} {year}: No sowing date found. ' +
-                'Using Default.')
-            # use default late sowing date (7th ofNovember)
-            sowing_date_late = datetime(year, 11, 7)
+            # last (latest) possible sowing date
+            try:
+                sowing_date_idx_late = estimate_sowing_date(
+                    tmean=tmean,
+                    daily_precip=daily_precip,
+                    choice=-1
+                )
+                sowing_date_late = dates[sowing_date_idx_late]
+            except ValueError:
+                logger.info(
+                    f'{unit.ID} {year}: No sowing date found. ' +
+                    'Using Default.')
+                # use default late sowing date (7th ofNovember)
+                sowing_date_late = datetime(year, 11, 7)
 
         # prepare weather data for WOFOST
         weather = pd.DataFrame({
@@ -226,14 +230,22 @@ def process_year(
             elevation = 450
 
         # setup agrar manager and weather data provider for WOFOST
-        agromanager_early = get_agromanager(
-            sowing_date=sowing_date_early,
-            fpath_wheat_calender=fpath_wheat_calendar
-        )['AgroManagement']
-        agromanager_late = get_agromanager(
-            sowing_date=sowing_date_late,
-            fpath_wheat_calender=fpath_wheat_calendar
-        )['AgroManagement']
+        if sowing_date is None:
+            agromanager_early = get_agromanager(
+                sowing_date=sowing_date_early,
+                fpath_wheat_calender=fpath_wheat_calendar
+            )['AgroManagement']
+            agromanager_late = get_agromanager(
+                sowing_date=sowing_date_late,
+                fpath_wheat_calender=fpath_wheat_calendar
+            )['AgroManagement']
+        else:
+            sowing_date=datetime(year,sowing_date.month,sowing_date.day)
+            agromanager = get_agromanager(
+                sowing_date=sowing_date,
+                fpath_wheat_calender=fpath_wheat_calendar
+            )['AgroManagement']
+
         wdp = WeatherDataProvider_from_WeatherStation(
             weather_data=weather,
             elevation=elevation,
@@ -260,61 +272,97 @@ def process_year(
                 cropdata=cropdata
             )
 
-            # WOFOST72 Phenology model early sowing date
-            wofsim_early = Wofost72_Phenology(
-                parameters, wdp, agromanager_early)
-            # run till terminate
-            try:
-                wofsim_early.run_till_terminate()
-            except WeatherDataProviderError as e:
-                logger.error(f'{unit.NAME}: {e}')
-                continue
-            summary_early = wofsim_early.get_summary_output()
+            if sowing_date is None:
+                    # WOFOST72 Phenology model early sowing date
+                    wofsim_early = Wofost72_Phenology(
+                        parameters, wdp, agromanager_early)
+                    # run till terminate
+                    try:
+                        wofsim_early.run_till_terminate()
+                    except WeatherDataProviderError as e:
+                        logger.error(f'{unit.NAME}: {e}')
+                        continue
+                    summary_early = wofsim_early.get_summary_output()
 
-            # late sowing date
-            wofsim_late = Wofost72_Phenology(
-                parameters, wdp, agromanager_late)
-            # run till terminate
-            try:
-                wofsim_late.run_till_terminate()
-            except WeatherDataProviderError as e:
-                logger.error(f'{unit.NAME}: {e}')
-                continue
-            summary_late = wofsim_late.get_summary_output()
+                    # late sowing date
+                    wofsim_late = Wofost72_Phenology(
+                        parameters, wdp, agromanager_late)
+                    # run till terminate
+                    try:
+                        wofsim_late.run_till_terminate()
+                    except WeatherDataProviderError as e:
+                        logger.error(f'{unit.NAME}: {e}')
+                        continue
+                    summary_late = wofsim_late.get_summary_output()
+            else:
+                # WOFOST72 Phenology model early sowing date
+                wofsim = Wofost72_Phenology(
+                        parameters, wdp, agromanager)
+                # run till terminate
+                try:
+                    wofsim.run_till_terminate()
+                except WeatherDataProviderError as e:
+                    logger.error(f'{unit.NAME}: {e}')
+                    continue
+                summary = wofsim.get_summary_output()
 
             # save results in compact format
-            res_early_sowing = {
-                'id': unit.ID,
-                'harvest_year': year + 1,
-                'sowing_date': sowing_date_early.date().strftime(
-                    '%Y-%m-%d'),
-                'sowing_date_type': 'earliest',
-                'genotype': genotype,
-                'emergence_date': summary_early[0]['DOE'].strftime(
-                    '%Y-%m-%d'),
-                'anthesis_date': summary_early[0]['DOA'].strftime(
-                    '%Y-%m-%d'),
-                'crop_land_area_km2': unit.crop_land_km2,
-                'crop_land_area_perc': unit.crop_land_perc,
-                'geometry': unit.geometry
-            }
-            res_late_sowing = {
-                'id': unit.ID,
-                'harvest_year': year + 1,
-                'sowing_date': sowing_date_late.date().strftime(
-                    '%Y-%m-%d'),
-                'sowing_date_type': 'latest',
-                'genotype': genotype,
-                'emergence_date': summary_late[0]['DOE'].strftime(
-                    '%Y-%m-%d'),
-                'anthesis_date': summary_late[0]['DOA'].strftime(
-                    '%Y-%m-%d'),
-                'crop_land_area_km2': unit.crop_land_km2,
-                'crop_land_area_perc': unit.crop_land_perc,
-                'geometry': unit.geometry
-            }
-            yearly_results_list.append(res_early_sowing)
-            yearly_results_list.append(res_late_sowing)
+            if sowing_date is None:
+                res_early_sowing = {
+                    'id': unit.ID,
+                    'harvest_year': year + 1,
+                    'sowing_date': sowing_date_early.date().strftime(
+                        '%Y-%m-%d'),
+                    'sowing_date_type': 'earliest',
+                    'genotype': genotype,
+                    'emergence_date': summary_early[0]['DOE'].strftime(
+                        '%Y-%m-%d'),
+                    'anthesis_date': summary_early[0]['DOA'].strftime(
+                        '%Y-%m-%d'),
+                    'maturity_date': summary_early[0]['DOM'].strftime(
+                        '%Y-%m-%d'),
+                    'crop_land_area_km2': unit.crop_land_km2,
+                    'crop_land_area_perc': unit.crop_land_perc,
+                    'geometry': unit.geometry
+                }
+                res_late_sowing = {
+                    'id': unit.ID,
+                    'harvest_year': year + 1,
+                    'sowing_date': sowing_date_late.date().strftime(
+                        '%Y-%m-%d'),
+                    'sowing_date_type': 'latest',
+                    'genotype': genotype,
+                    'emergence_date': summary_late[0]['DOE'].strftime(
+                        '%Y-%m-%d'),
+                    'anthesis_date': summary_late[0]['DOA'].strftime(
+                        '%Y-%m-%d'),
+                    'maturity_date': summary_late[0]['DOM'].strftime(
+                        '%Y-%m-%d'),
+                    'crop_land_area_km2': unit.crop_land_km2,
+                    'crop_land_area_perc': unit.crop_land_perc,
+                    'geometry': unit.geometry
+                }
+                yearly_results_list.append(res_early_sowing)
+                yearly_results_list.append(res_late_sowing)
+            else:
+                res = {
+                    'id': unit.ID,
+                    'harvest_year': year + 1,
+                    'sowing_date': sowing_date.date().strftime(
+                        '%Y-%m-%d'),
+                    'sowing_date_type': 'latest',
+                    'genotype': genotype,
+                    'emergence_date': summary[0]['DOE'].strftime(
+                        '%Y-%m-%d'),
+                    'anthesis_date': summary[0]['DOA'].strftime(
+                        '%Y-%m-%d'),
+                    'maturity_date': summary[0]['DOM'].strftime(
+                        '%Y-%m-%d'),
+                    'crop_land_area_km2': unit.crop_land_km2,
+                    'crop_land_area_perc': unit.crop_land_perc,
+                    'geometry': unit.geometry
+                }
+                yearly_results_list.append(res)
 
     # concatenate yearly results
     yearly_results_df = pd.DataFrame(yearly_results_list)
@@ -365,19 +413,30 @@ def run(
     else:
         raise TypeError(
             'spatial units must be either a Path or a GeoDataFrame')
+    
+    #add latitude longitude to units
+    units_new = gpd.GeoDataFrame.copy(units)
+    units_new['geometry']=units_new.geometry.centroid
+    units_new=units_new.to_crs(epsg=4326)
+    units['latitude']=units_new.geometry.y.values
+    units['longitude']=units_new.geometry.x.values
 
     # read the weather data
     meteo = {}
     for fpath_meteo in input_data_dir.glob('*.csv'):
         variable = fpath_meteo.name.split('_')[0]
-        meteo_df = pd.read_csv(fpath_meteo, index_col=0)
-        if 'date' in meteo_df:
+        meteo_df = pd.read_csv(fpath_meteo)
+        if 'date' in meteo_df.keys():
             meteo_df['date'] = pd.to_datetime(meteo_df.date).dt.date
-        elif 'time' in meteo_df:
+        elif 'time' in meteo_df.keys():
             meteo_df['date'] = pd.to_datetime(meteo_df.time).dt.date
         else:
             raise ValueError('Neither "time" nor "date" found in meteo data')
         meteo[variable] = meteo_df
+
+    #set fixed sowing date (with dummy year that is set automatically during the processing of the year)
+    #use sowing_date=None if sowing date is to be estimated with weather data (requires precipitation data)
+    sowing_date=datetime(1999,10,15)
 
     # loop through the years using a multiprocessing pool
     with mp.Pool(processes=mp.cpu_count()-1) as pool:
@@ -389,7 +448,8 @@ def run(
                 [output_dir] * len(years),
                 [genotypes] * len(years),
                 [fpath_tsum1_opt_dir] * len(years),
-                [fpath_wheat_calendar] * len(years)))
+                [fpath_wheat_calendar] * len(years),
+                [sowing_date] * len(years)))
 
 
 if __name__ == '__main__':
@@ -412,7 +472,7 @@ if __name__ == '__main__':
     # set years to run the model for
     years = list(range(1971, 2020))
     # set genotypes
-    genotypes = ['Arina', 'CH_Claro']
+    genotypes = ['Arina'] #, 'CH_Claro']
 
     # set output directory. The results will be stored in a
     # GeoPackage file per year.
