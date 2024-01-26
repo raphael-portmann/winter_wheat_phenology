@@ -11,7 +11,7 @@ Clone the repository from GitHub. Since the [meteorological data](/meteo_data/) 
 ```bash
 git lfs install
 git clone git@github.com:EOA-team/winter_wheat_phenology.git
-cd wofost_phenology
+cd wofost_winter_wheat_phenology
 ```
 
 Create a Python environment and install the dependencies (shown for Linux systems).
@@ -19,6 +19,13 @@ Create a Python environment and install the dependencies (shown for Linux system
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
+```
+On windows with conda use
+
+```bash
+conda create -n venv pip
+conda activate venv
 pip install -r requirements.txt
 ```
 
