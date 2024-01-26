@@ -160,7 +160,7 @@ def process_year(
 
     # estimate the sowing date per spatial unit
     yearly_results_list = []
-    for _, unit in units.iterrows():
+    for unit in units.itertuples():
         meteo_year_unit = {}
         try:
             for variable in meteo_year.keys():
@@ -216,15 +216,15 @@ def process_year(
         })
 
         # get longitude and latitude
-        unit_gdf = gpd.GeoDataFrame(
-            [unit], crs=units.crs)
-        unit_gdf.geometry = unit_gdf.geometry.centroid
-        unit_gdf.to_crs(epsg=4326, inplace=True)
-        longitude = unit_gdf.geometry.x.values[0]
-        latitude = unit_gdf.geometry.y.values[0]
+        #unit_gdf = gpd.GeoDataFrame(
+        #    [unit], crs=units.crs)
+        #unit_gdf.geometry = unit_gdf.geometry.centroid
+        #unit_gdf.to_crs(epsg=4326, inplace=True)
+        #longitude = unit_gdf.geometry.x.values[0]
+        #latitude = unit_gdf.geometry.y.values[0]
         # use the true elevation if available
-        if 'Elevation' in unit_gdf.columns:
-            elevation = unit_gdf.Elevation.values[0]
+        if 'Elevation' in units.columns:
+            elevation = unit.Elevation
         # else set elevation to dummy value
         else:
             elevation = 450
@@ -249,8 +249,8 @@ def process_year(
         wdp = WeatherDataProvider_from_WeatherStation(
             weather_data=weather,
             elevation=elevation,
-            lon=longitude,
-            lat=latitude
+            lon=unit.longitude,
+            lat=unit.latitude
         )
 
         # loop over genotypes and calculate the date of anthesis
@@ -258,8 +258,9 @@ def process_year(
             with open(
                 fpath_tsum1_opt_dir.joinpath(f'{genotype.lower()}.txt')
             ) as src:
-                tsum1_opt = float(src.read().split()[0])
-                tsum2_opt = float(src.read().split()[1])
+                tsums=src.read().split()
+                tsum1_opt = float(tsums[0])
+                tsum2_opt = float(tsums[1])
 
             cropd = pcse.fileinput.YAMLCropDataProvider()
             cropd.set_active_crop('wheat', 'Winter_wheat_105')
@@ -358,8 +359,8 @@ def process_year(
                         '%Y-%m-%d'),
                     'maturity_date': summary[0]['DOM'].strftime(
                         '%Y-%m-%d'),
-                    'crop_land_area_km2': unit.crop_land_km2,
-                    'crop_land_area_perc': unit.crop_land_perc,
+                    'n_fields': unit.n_fields,
+                    'area_ha': unit.area_ha,
                     'geometry': unit.geometry
                 }
                 yearly_results_list.append(res)
