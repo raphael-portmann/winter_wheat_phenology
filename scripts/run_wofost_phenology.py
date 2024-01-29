@@ -160,6 +160,7 @@ def process_year(
 
     # estimate the sowing date per spatial unit
     yearly_results_list = []
+
     for unit in units.itertuples():
         meteo_year_unit = {}
         try:
@@ -245,7 +246,7 @@ def process_year(
                 sowing_date=sowing_date,
                 fpath_wheat_calender=fpath_wheat_calendar
             )['AgroManagement']
-
+        
         wdp = WeatherDataProvider_from_WeatherStation(
             weather_data=weather,
             elevation=elevation,
@@ -346,6 +347,11 @@ def process_year(
                 yearly_results_list.append(res_early_sowing)
                 yearly_results_list.append(res_late_sowing)
             else:
+                if summary[0]['DOM'] is not None:
+                    maturity_date=summary[0]['DOM'].strftime(
+                        '%Y-%m-%d')
+                else:
+                    maturity_date=None
                 res = {
                     'id': unit.ID,
                     'harvest_year': year + 1,
@@ -357,8 +363,7 @@ def process_year(
                         '%Y-%m-%d'),
                     'anthesis_date': summary[0]['DOA'].strftime(
                         '%Y-%m-%d'),
-                    'maturity_date': summary[0]['DOM'].strftime(
-                        '%Y-%m-%d'),
+                    'maturity_date': maturity_date,
                     'n_fields': unit.n_fields,
                     'area_ha': unit.area_ha,
                     'geometry': unit.geometry
@@ -421,12 +426,16 @@ def run(
     units_new=units_new.to_crs(epsg=4326)
     units['latitude']=units_new.geometry.y.values
     units['longitude']=units_new.geometry.x.values
+    if 'NAME' not in units.keys():
+        units['NAME']=units.ID
 
     # read the weather data
     meteo = {}
     for fpath_meteo in input_data_dir.glob('*.csv'):
         variable = fpath_meteo.name.split('_')[0]
         meteo_df = pd.read_csv(fpath_meteo)
+        #drop grid cells with nan values
+        meteo_df=meteo_df.dropna(axis=1)
         if 'date' in meteo_df.keys():
             meteo_df['date'] = pd.to_datetime(meteo_df.date).dt.date
         elif 'time' in meteo_df.keys():
@@ -471,7 +480,7 @@ if __name__ == '__main__':
     spatial_units = cwd.joinpath('spatial_units.gpkg')
 
     # set years to run the model for
-    years = list(range(1971, 2020))
+    years = list(range(1985, 2021))
     # set genotypes
     genotypes = ['Arina'] #, 'CH_Claro']
 
