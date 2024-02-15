@@ -1,0 +1,139 @@
+Bundesamt für Meteorologie und Klimatologie, MeteoSchweiz
+Operation Center 1
+Postfach 257
+8058 Zürich-Flughafen
+
+stn yyyyMMddHHmm
+
+stn Stationskürzel
+y   Jahr
+M   Monat
+d   Tag
+H   Stunde
+m   Minute
+
+Zeitangaben in UTC: 00:40 UTC = 02:40 Sommerzeit
+                              = 01:40 Winterzeit
+
+Zeitbezug bei Stundenwerten, sofern in der Parameterbeschreibung nicht anders vermerkt: HH  = (HH-1):01 - HH:00
+Beispiel: 13 = beinhaltet Messperiode von 12:01 bis 13:00 
+
+Fehlende Messwerte sind gekenntzeichnet mit '-'
+
+Qualitätsinformationen: Die Legende zu den Qualitätsinformationen ist zu finden unter: https://gate.meteoswiss.ch/idaweb/text/datenqualitaet_legende_de.pdf
+
+ 
+
+
+
+
+Stationen
+---------
+stn       Name                                 Parameter        Datenquelle                                        Länge/Breite             Koordinaten [km] Höhe ü. M. [m]
+AFE       Affoltern im Emmental                mtria59d         MeteoSchweiz                                       7°44'/47°04'             622311/212695    800
+ANR       Andeer                               mtria59d         MeteoSchweiz                                       9°25'/46°36'             752000/163000    985
+AZM       Azmoos                               mtria59d         MeteoSchweiz                                       9°29'/47°05'             755000/216000    480
+BAB       Basel-Binningen                      mtria59d         MeteoSchweiz                                       7°35'/47°33'             610820/266440    315
+BEL       Bellelay                             mtria59d         MeteoSchweiz                                       7°10'/47°16'             579350/234970    930
+BLO       Blonay                               mtria59d         MeteoSchweiz                                       6°54'/46°28'             558000/146000    600
+BGA       Bremgarten                           mtria59d         MeteoSchweiz                                       8°20'/47°21'             667883/244282    400
+BPI       Brusio-Piazzo                        mtria59d         MeteoSchweiz                                       10°07'/46°16'            806330/127300    850
+BLE       Bôle, NE                             mtria59d         MeteoSchweiz                                       6°50'/46°58'             554539/201971    530
+BUL       Bülach                               mtria59d         MeteoSchweiz                                       8°32'/47°31'             683000/264000    420
+CER       Cernier                              mtria59d         MeteoSchweiz                                       6°59'/47°06'             565686/216475    900
+CHI       Changins                             mtria59d         MeteoSchweiz                                       6°14'/46°24'             507000/139000    435
+CDP       Chemin de Paille (Chaumont II)       mtria59d         MeteoSchweiz                                       6°57'/47°01'             563000/208000    1010
+CHR       Chur                                 mtria59d         MeteoSchweiz                                       9°33'/46°52'             760340/192940    640
+CTY       Conthey                              mtria59d         MeteoSchweiz                                       7°18'/46°13'             589684/117628    478
+CSS       Cossonay                             mtria59d         MeteoSchweiz                                       6°31'/46°37'             529000/163000    565
+COE       Couvet                               mtria59d         MeteoSchweiz                                       6°38'/46°55'             539000/197000    750
+DLT       Delémont I                           mtria59d         MeteoSchweiz                                       7°21'/47°21'             592681/245024    416
+DLM       Delémont II                          mtria59d         MeteoSchweiz                                       7°21'/47°22'             593277/245679    430
+DIH       Diessenhofen                         mtria59d         MeteoSchweiz                                       8°45'/47°41'             698000/283000    410
+DST       Disentis                             mtria59d         MeteoSchweiz                                       8°51'/46°42'             708000/173000    1200
+DOM       Domat / Ems                          mtria59d         MeteoSchweiz                                       9°27'/46°50'             754000/189000    580
+DOT       Döttingen                            mtria59d         MeteoSchweiz                                       8°15'/47°34'             661050/269000    350
+EDB       Edlibach                             mtria59d         MeteoSchweiz                                       8°34'/47°11'             686000/226000    750
+ENS       Enges                                mtria59d         MeteoSchweiz                                       7°01'/47°03'             567600/211800    820
+EHT       Escholzmatt                          mtria59d         MeteoSchweiz                                       7°56'/46°54'             637620/194290    910
+ELA       Estavayer-le-Lac                     mtria59d         MeteoSchweiz                                       6°51'/46°50'             555000/188000    450
+FES       Fescoggia                            mtria59d         MeteoSchweiz                                       8°53'/46°02'             711200/99780     855
+FIS       Fiesch                               mtria59d         MeteoSchweiz                                       8°08'/46°24'             653000/139000    1100
+FRK       Frick                                mtria59d         MeteoSchweiz                                       8°01'/47°30'             643257/262000    360
+GBS       Grabs                                mtria59d         MeteoSchweiz                                       9°27'/47°11'             752000/228000    500
+GDW       Grossdietwil                         mtria59d         MeteoSchweiz                                       7°53'/47°10'             634000/224000    610
+GUD       Gundetswil                           mtria59d         MeteoSchweiz                                       8°49'/47°32'             704000/266000    460
+HLU       Hallau                               mtria59d         MeteoSchweiz                                       8°27'/47°42'             676480/283560    430
+HBW       Hard b. Weinfelden                   mtria59d         MeteoSchweiz                                       9°08'/47°34'             726949/269905    450
+HZB       Herzogenbuchsee                      mtria59d         MeteoSchweiz                                       7°42'/47°11'             620000/226000    450
+KSU       Kaiserstuhl                          mtria59d         MeteoSchweiz                                       8°25'/47°34'             673751/268898    360
+KTN       Kloten                               mtria59d         MeteoSchweiz                                       8°35'/47°27'             686000/256000    440
+KBR       Kollbrunn                            mtria59d         MeteoSchweiz                                       8°46'/47°27'             700683/257240    495
+ISL       L' Isle, VD                          mtria59d         MeteoSchweiz                                       6°25'/46°37'             521469/163510    667
+ABT       L'Abergement                         mtria59d         MeteoSchweiz                                       6°29'/46°45'             527540/178770    660
+LCD       La Coudre                            mtria59d         MeteoSchweiz                                       6°58'/47°01'             564000/207000    500
+LAW       Lanterswil                           mtria59d         MeteoSchweiz                                       9°06'/47°31'             725000/264000    570
+LBU       Laufenburg                           mtria59d         MeteoSchweiz                                       8°04'/47°34'             647000/268000    330
+LOL       Le Locle                             mtria59d         MeteoSchweiz                                       6°45'/47°03'             548000/211000    1020
+VER       Les Verrières                        mtria59d         MeteoSchweiz                                       6°27'/46°54'             525285/194870    927
+LGG       Leuggern                             mtria59d         MeteoSchweiz                                       8°13'/47°35'             659000/270000    350
+LEY       Leysin                               mtria59d         MeteoSchweiz                                       7°01'/46°20'             566970/132170    1250
+LCN       Locarno                              mtria59d         MeteoSchweiz                                       8°48'/46°10'             705000/114000    200
+LOG       Longirod                             mtria59d         MeteoSchweiz                                       6°16'/46°30'             509980/150390    900
+LOS       Losone, TI                           mtria59d         MeteoSchweiz                                       8°46'/46°10'             702227/113792    233
+MEH       Merishausen                          mtria59d         MeteoSchweiz                                       8°37'/47°46'             688000/291000    540
+MDN       Moudon                               mtria59d         MeteoSchweiz                                       6°47'/46°39'             549400/166334    600
+MRI       Muri, AG                             mtria59d         MeteoSchweiz                                       8°20'/47°16'             667630/235320    550
+MOI       Möhlin                               mtria59d         MeteoSchweiz                                       7°51'/47°34'             631000/268000    305
+MBS       Münchenbuchsee                       mtria59d         MeteoSchweiz                                       7°27'/47°01'             601000/208000    560
+NHA       Neuhausen                            mtria59d         MeteoSchweiz                                       8°37'/47°41'             688370/281920    435
+OHD       Oberehrendingen                      mtria59d         MeteoSchweiz                                       8°20'/47°29'             667350/259400    490
+OLG       Oberlangenegg                        mtria59d         MeteoSchweiz                                       7°43'/46°48'             621191/184156    910
+OES       Oeschberg                            mtria59d         MeteoSchweiz                                       7°37'/47°08'             613250/219525    485
+OBO       Orbe / Bochuz                        mtria59d         MeteoSchweiz                                       6°32'/46°43'             531000/175000    485
+ORV       Orvin                                mtria59d         MeteoSchweiz                                       7°13'/47°09'             583000/223000    700
+OST       Osterfingen                          mtria59d         MeteoSchweiz                                       8°29'/47°39'             679000/279000    410
+POS       Posieux                              mtria59d         MeteoSchweiz                                       7°06'/46°46'             574000/179000    680
+RAF       Rafz                                 mtria59d         MeteoSchweiz                                       8°33'/47°37'             683000/275000    515
+RAW       Raperswilen, TG                      mtria59d         MeteoSchweiz                                       9°03'/47°38'             721000/277000    595
+ROF       Rochefort I                          mtria59d         MeteoSchweiz                                       6°49'/46°59'             552180/203193    770
+RON       Romanshorn                           mtria59d         MeteoSchweiz                                       9°23'/47°34'             745800/269900    405
+SLZ       Salez                                mtria59d         MeteoSchweiz                                       9°31'/47°14'             757000/233000    450
+SRG       Sargans I                            mtria59d         MeteoSchweiz                                       9°27'/47°03'             752483/212428    500
+SGS       Sargans II                           mtria59d         MeteoSchweiz                                       9°26'/47°03'             752000/213000    480
+SNN       Sarnen                               mtria59d         MeteoSchweiz                                       8°15'/46°54'             662000/194000    500
+SCR       Schiers                              mtria59d         MeteoSchweiz                                       9°41'/46°58'             771000/204000    800
+SCW       Schönenwerd                          mtria59d         MeteoSchweiz                                       7°60'/47°22'             642330/246200    450
+SCL       Scuol                                mtria59d         MeteoSchweiz                                       10°18'/46°48'            818132/186554    1240
+SEO       Seon                                 mtria59d         MeteoSchweiz                                       8°09'/47°20'             654015/243297    550
+SXB       St-Blaise, NE                        mtria59d         MeteoSchweiz                                       6°59'/47°01'             565638/207015    500
+STJ       St. Jean, VS                         mtria59d         MeteoSchweiz                                       7°35'/46°12'             611375/116175    1322
+SUZ       Sulz, AG                             mtria59d         MeteoSchweiz                                       8°06'/47°32'             649457/264192    430
+TUS       Thusis                               mtria59d         MeteoSchweiz                                       9°26'/46°43'             753150/175100    700
+TVS       Travers, NE                          mtria59d         MeteoSchweiz                                       6°40'/46°56'             541830/199154    750
+TWI       Töss / Winterthur                    mtria59d         MeteoSchweiz                                       8°43'/47°29'             695755/260669    450
+UKU       Unterkulm                            mtria59d         MeteoSchweiz                                       8°07'/47°19'             651000/240000    450
+VLN       Valangin, NE                         mtria59d         MeteoSchweiz                                       6°54'/47°01'             559579/207373    700
+VOR       Vallorbe                             mtria59d         MeteoSchweiz                                       6°23'/46°43'             519000/174000    850
+VES       Versoix                              mtria59d         MeteoSchweiz                                       6°08'/46°17'             499708/127389    440
+VUF       Vufflens-la-Ville, VD                mtria59d         MeteoSchweiz                                       6°32'/46°35'             531061/158814    470
+WDT       Walenstadt                           mtria59d         MeteoSchweiz                                       9°21'/47°06'             744765/219136    452
+WAT       Wattwil, SG                          mtria59d         MeteoSchweiz                                       9°06'/47°17'             726000/239000    625
+WIL       Wil, SG                              mtria59d         MeteoSchweiz                                       9°03'/47°28'             722000/258000    600
+WIB       Wiliberg                             mtria59d         MeteoSchweiz                                       8°02'/47°17'             644540/236690    650
+WTH       Winterthur                           mtria59d         MeteoSchweiz                                       8°48'/47°28'             702277/259046    580
+WOL       Wolhusen                             mtria59d         MeteoSchweiz                                       8°04'/47°04'             648039/212785    580
+WOR       Worb BE                              mtria59d         MeteoSchweiz                                       7°35'/46°55'             610597/197047    600
+WYA       Wynau                                mtria59d         MeteoSchweiz                                       7°49'/47°15'             628000/234000    450
+WYS       Wyssachen                            mtria59d         MeteoSchweiz                                       7°49'/47°05'             629000/215000    750
+ZIZ       Zizers                               mtria59d         MeteoSchweiz                                       9°34'/46°56'             762000/200000    600
+ZAL       Zürich-Albisgüetli                   mtria59d         MeteoSchweiz                                       8°31'/47°21'             681000/245000    530
+ZHO       Zürich-Hönggerberg                   mtria59d         MeteoSchweiz                                       8°29'/47°25'             679418/252315    540
+ZUS       Zürich-Seebach                       mtria59d         MeteoSchweiz                                       8°32'/47°25'             683000/252000    430
+ZWI       Zürich-Witikon                       mtria59d         MeteoSchweiz                                       8°35'/47°22'             687000/246000    620
+
+Parameter
+---------
+          Einheit                              Beschreibung
+mtria59d  Datum2                               Weizen - Ährenbildung
+
