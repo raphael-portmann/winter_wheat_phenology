@@ -210,6 +210,9 @@ def process_year(
                 sowing_date_late = datetime(year, 11, 7)
 
         # prepare weather data for WOFOST
+        print(len(list(dates)))
+        print(len(meteo_year_unit['TminD'].values))
+        print(len(meteo_year_unit['TmaxD'].values))
         weather = pd.DataFrame({
             'date': list(dates),
             'T_min': meteo_year_unit['TminD'].values,
@@ -442,6 +445,8 @@ def run(
             meteo_df['date'] = pd.to_datetime(meteo_df.time).dt.date
         else:
             raise ValueError('Neither "time" nor "date" found in meteo data')
+        #drop duplicate times if they exist
+        meteo_df = meteo_df.drop_duplicates(subset=["time"],keep='first')
         meteo[variable] = meteo_df
 
     #set fixed sowing date (with dummy year that is set automatically during the processing of the year)
@@ -475,18 +480,20 @@ if __name__ == '__main__':
     # input data directory with meteorological data.
     # You will need git's large file storage (lfs) to download the data
     # from the repository (on git clone)
-    input_data_dir = cwd.parent.joinpath('meteo_data/MeteoSwiss')
+    #:qinput_data_dir = cwd.parent.joinpath('meteo_data/MeteoSwiss')
+    input_data_dir = cwd.parent.joinpath('meteo_data/ClimateSimulations/present')
     # grid cells to run the model for (GeoPackage file)
     spatial_units = cwd.joinpath('spatial_units.gpkg')
 
     # set years to run the model for
-    years = list(range(1985, 2021))
+    #years = list(range(1972, 2021))
+    years = list(range(2011, 2013))
     # set genotypes
     genotypes = ['Arina'] #, 'CH_Claro']
 
     # set output directory. The results will be stored in a
     # GeoPackage file per year.
-    output_dir = cwd.parent.joinpath('results')
+    output_dir = cwd.parent.joinpath('results/ClimateSimulations/present/')
 
     # run the model
     run(
